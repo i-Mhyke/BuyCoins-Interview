@@ -1,3 +1,5 @@
+import API_KEY from "./config.js";
+
 const base_url = "https://api.github.com/graphql";
 const search_form = document.querySelector("#search-form");
 
@@ -12,15 +14,75 @@ const repository_container = document.querySelector("#repo-container");
 const error_section = document.querySelector("#error-section");
 const main_section = document.querySelector("#main-section");
 
+// Initialize website with my login name
 async function init() {
   const initialData = await getUserData("i-Mhyke");
   generateComponents(initialData);
 }
 
+// Initialize query connection to the api
+const fetchClient = async (query, variables) => {
+  return fetch(base_url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${API_KEY}`,
+    },
+    body: JSON.stringify({
+      query: query,
+      variables: variables,
+    }),
+  }).then((response) => response.json());
+};
+
+// Set query parameters handle request to server
+const getUserData = async (userName) => {
+  return fetchClient(
+    `
+    query getUser($login: String!) {
+        repositoryOwner(login: $login) {
+            ... on User {
+                id
+                email
+                name
+                bio
+                login
+                avatarUrl
+                repositories(first: 20) {
+                    edges {
+                        node {
+                            id
+                            forkCount
+                            name
+                            updatedAt
+                            primaryLanguage {
+                                name
+                                color
+                            }
+                            stargazerCount
+                            description
+                        }
+                    }
+                    totalCount
+                }
+            }
+        }
+    }
+    `,
+    { login: userName }
+  )
+    .then((data) => data.data.repositoryOwner)
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+// Handle form events.
 search_form.addEventListener("submit", async (event) => {
   event.preventDefault();
   let search_input = document.querySelector("#search-input").value.trim();
   const userData = await getUserData(search_input);
+
   if (userData === null) {
     error_section.style.display = "block";
     main_section.style.display = "none";
@@ -34,13 +96,7 @@ search_form.addEventListener("submit", async (event) => {
   }
 });
 
-const convertDateToString = (date) => {
-  let newDate = new Date(date);
-  let dateArray = newDate.toDateString().split(" ");
-  let dateFormat = dateArray[2] + " " + dateArray[1] + " " + dateArray[3];
-  return dateFormat;
-};
-
+// Populate components with dynamic data retrieved from the user's request
 const generateComponents = (data) => {
   user_avatar_small.src = data.avatarUrl;
   user_avatar.forEach((user) => (user.src = data.avatarUrl));
@@ -135,55 +191,12 @@ const generateComponents = (data) => {
   }
 };
 
-const getUserData = async (userName) => {
-  return fetchClient(
-    `
-    query getUser($login: String!) {
-        repositoryOwner(login: $login) {
-            ... on User {
-                id
-                email
-                name
-                bio
-                login
-                avatarUrl
-                repositories(first: 20) {
-                    edges {
-                        node {
-                            id
-                            forkCount
-                            name
-                            updatedAt
-                            primaryLanguage {
-                                name
-                                color
-                            }
-                            stargazerCount
-                            description
-                        }
-                    }
-                    totalCount
-                }
-            }
-        }
-    }
-    `,
-    { login: userName }
-  ).then((data) => data.data.repositoryOwner);
-};
-
-const fetchClient = async (query, variables) => {
-  return fetch(base_url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer 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`,
-    },
-    body: JSON.stringify({
-      query: query,
-      variables: variables,
-    }),
-  }).then((response) => response.json());
+// Util function that converts github date to readable string string
+const convertDateToString = (date) => {
+  let newDate = new Date(date);
+  let dateArray = newDate.toDateString().split(" ");
+  let dateFormat = dateArray[2] + " " + dateArray[1] + " " + dateArray[3];
+  return dateFormat;
 };
 
 init();

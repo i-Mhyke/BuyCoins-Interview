@@ -357,6 +357,10 @@ footer ul .footer-logo {
   main .sticky-menu .switch-menu li {
     font-size: 14px;
   }
+  main .profile-details .profile-image .emoji-container {
+    bottom: 30px;
+    right: 30px;
+  }
   main .profile-details .profile-image,
   main .profile-details .profile-bio-data {
     padding: 0 0.7rem;
