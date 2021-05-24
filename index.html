@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Github Profile Clone</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+    <script
+      src="https://code.iconify.design/1/1.0.6/iconify.min.js"
+      defer
+    ></script>
+  </head>
+  <body>
+    <nav class="nav">
+      <div class="nav-bar container flex-row">
+        <div class="header-logo flex-row">
+          <div>
+            <span
+              class="iconify light-icon"
+              data-inline="false"
+              data-icon="bi:github"
+              style="font-size: 32px"
+              data-flip="horizontal"
+            ></span>
+          </div>
+          <div>
+            <form id="search-form">
+              <div class="form-group">
+                <input
+                  placeholder="Input username"
+                  type="text"
+                  name="search"
+                  id="search-input"
+                  autocomplete="off"
+                />
+                <button type="submit">/</button>
+              </div>
+            </form>
+          </div>
+          <ul class="menu-list">
+            <li>Pull Requests</li>
+            <li>Issues</li>
+            <li>Codespaces</li>
+            <li>Marketplace</li>
+            <li>Explore</li>
+          </ul>
+        </div>
+        <div class="header-icons-container flex-row">
+          <div class="notification-wrapper">
+            <span
+              class="iconify light-icon"
+              data-inline="false"
+              data-icon="mi:notification"
+              data-flip="horizontal"
+              style="font-size: 18px"
+            ></span>
+            <span class="indicator"></span>
+          </div>
+          <div class="plus-wrapper">
+            <span
+              class="iconify light-icon"
+              data-inline="false"
+              data-icon="bi:plus-lg"
+              style="font-size: 11px"
+              data-flip="horizontal"
+            ></span>
+            <span
+              class="iconify light-icon"
+              data-inline="false"
+              data-icon="bi:caret-down-fill"
+              style="font-size: 11px"
+              data-flip="horizontal"
+            ></span>
+          </div>
+          <div class="header-profile-img">
+            <img id="user-avatar-small" />
+            <span
+              class="iconify light-icon"
+              data-inline="false"
+              data-icon="bi:caret-down-fill"
+              style="font-size: 11px"
+              data-flip="horizontal"
+            ></span>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <main id="main-section">
+      <div class="profile-details sm">
+        <div class="profile-image flex-row">
+          <div class="col-2">
+            <img
+              class="user-avatar"
+              width="260"
+              height="260"
+              alt="User Avatar"
+            />
+          </div>
+          <div class="col-8 name-section">
+            <h2 class="user-name"></h2>
+            <p class="user-login muted"></p>
+          </div>
+        </div>
+        <div class="profile-bio-data">
+          <!-- <h2 class="user-name"></h2>
+          <p class="user-login muted"></p> -->
+          <p class="user-bio"></p>
+        </div>
+      </div>
+      <div class="sticky-menu container flex-row lg">
+        <div class="col-3 lg"></div>
+        <div class="col-7 lg">
+          <ul class="switch-menu">
+            <li>
+              <span
+                class="iconify dark-icon"
+                data-inline="false"
+                data-icon="akar-icons:book"
+                data-flip="horizontal"
+              ></span>
+              <span>Overview</span>
+            </li>
+            <li class="active">
+              <span
+                class="iconify dark-icon"
+                data-inline="false"
+                data-icon="ri:git-repository-line"
+                data-flip="horizontal"
+              ></span>
+              <span>Repositories</span>
+              <span id="repo-count"></span>
+            </li>
+            <li>
+              <span
+                class="iconify dark-icon"
+                data-inline="false"
+                data-icon="ant-design:project-outlined"
+                data-flip="horizontal"
+              ></span>
+              <span>Projects</span>
+            </li>
+            <li>
+              <span
+                class="iconify dark-icon"
+                data-inline="false"
+                data-icon="octicon:package-16"
+                data-flip="horizontal"
+              ></span>
+              <span>Packages</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="container xl flex-row lg">
+        <div class="profile-details col-3 lg">
+          <div class="profile-image">
+            <img
+              class="user-avatar"
+              width="260"
+              height="260"
+              alt="User Avatar"
+            />
+            <div class="emoji-container flex-row">
+              <span
+                class="iconify dark-icon"
+                data-inline="false"
+                data-icon="octicon:smiley-16"
+                data-flip="horizontal"
+              ></span>
+            </div>
+          </div>
+          <div class="profile-bio-data">
+            <h2 class="user-name"></h2>
+            <p class="user-login muted"></p>
+            <p class="user-bio"></p>
+          </div>
+        </div>
+        <div class="profile-repositories col-7 lg">
+          <div class="filter-input">
+            <input
+              placeholder="Find a repository..."
+              type="text"
+              name="filter-repos"
+              id="filter"
+            />
+          </div>
+          <div class="repository-container" id="repo-container"></div>
+        </div>
+      </div>
+    </main>
+    <div id="error-section">
+      <div class="error container">
+        <h2>404 User not found</h2>
+        <p>
+          Oops! The user your are looking for does not exist. Please check the
+          name and try again.
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="container">
+        <ul>
+          <li class="muted">© 2021 GitHub, Inc.</li>
+          <li>
+            <ul>
+              <li><a href="#">Terms</a></li>
+              <li><a href="#">Privacy</a></li>
+              <li><a href="#">Security</a></li>
+              <li><a href="#">Status</a></li>
+              <li><a href="#">Docs</a></li>
+            </ul>
+          </li>
+          <li class="footer-logo">
+            <span
+              class="iconify dark-icon"
+              data-inline="false"
+              data-icon="bi:github"
+              style="font-size: 32px"
+              data-flip="horizontal"
+            ></span>
+          </li>
+          <li>
+            <ul>
+              <li><a href="#">Contact Github</a></li>
+              <li><a href="#">Pricing</a></li>
+              <li><a href="#">Api</a></li>
+              <li><a href="#">Training</a></li>
+              <li><a href="#">Blog</a></li>
+              <li><a href="#">About</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </footer>
+  </body>
+</html>
