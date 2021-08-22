@@ -55,6 +55,7 @@ const getUserData = async (userName) => {
                             forkCount
                             name
                             updatedAt
+                            url
                             primaryLanguage {
                                 name
                                 color
@@ -114,7 +115,10 @@ const generateComponents = (data) => {
               <div class="repository flex-row">
                 <div class="col-8">
                   <h3 class="repository-name">
-                    <a href="#">${node.name !== null ? node.name : ""}</a>
+                    <a href=${node.url} target='_blank'
+                  rel='noopener noreferrer'>${
+                    node.name !== null ? node.name : ""
+                  }</a>
                   </h3>
                   <p class="repository-desc">
                     ${node.description !== null ? node.description : ""}
